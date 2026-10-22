@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Цвета из руководства по стилю -->
+    <Color x:Key="ColorWhite">#FFFFFF</Color>
+    <Color x:Key="ColorLightGrayBg">#F3F3F3</Color>
+    <Color x:Key="ColorCyanAccent">#0198AF</Color>
+    <Color x:Key="ColorDarkBlue">#233E76</Color>
+    <Color x:Key="ColorLightGrayElement">#EAEBED</Color>
+    <Color x:Key="ColorBrightTeal">#4DC6C5</Color>
+    <Color x:Key="ColorNavy">#193D57</Color>
+    <Color x:Key="ColorPriorityHigh">#DD4B42</Color>
+    <Color x:Key="ColorGrayText">#9197A3</Color>
+
+    <FontFamily x:Key="MainFont">Open Sans, Segoe UI, Arial</FontFamily>
+</ResourceDictionary>

@@ -1,0 +1,132 @@
+﻿<Window x:Class="GusakovUP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GusakovUP"
+        mc:Ignorable="d"
+        Title="Панель управления" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхний бар -->
+        <Border Grid.Row="0" Background="{DynamicResource ElementBackgroundBrush}" Padding="15,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Пользователь: " Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    <TextBlock Text="{Binding CurrentUser.FullName}" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <Separator Margin="10,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                    <TextBlock Text="Роль: " Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    <TextBlock Text="{Binding UserRoleName}" FontWeight="Bold" Foreground="{DynamicResource AccentButtonBrush}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="Сменить пароль" Command="{Binding ChangePasswordCommand}" Height="30" Margin="0,0,10,0" Padding="10,0"/>
+                    <ComboBox x:Name="ThemeSelector" Width="120" Height="30" SelectionChanged="ThemeSelector_SelectionChanged">
+                        <ComboBoxItem Content="Светлая тема" IsSelected="True"/>
+                        <ComboBoxItem Content="Темная тема"/>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Рабочая область -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Таблица и фильтры -->
+            <!-- ЛЕВАЯ ЧАСТЬ: Поиск, Фильтры и DataGrid -->
+            <Grid Grid.Column="0" Margin="0,0,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Ваша панель поиска и фильтрации (Пункты 5 и 6 ТЗ) -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                    <StackPanel Margin="0,0,10,0">
+                        <TextBlock Text="Поиск" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="30" VerticalContentAlignment="Center" Padding="5,0"
+                     ToolTip="Введите часть названия задачи для мгновенного поиска"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,10,0">
+                        <TextBlock Text="Проект" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <ComboBox ItemsSource="{Binding ProjectsList}" SelectedItem="{Binding SelectedProjectFilter}" DisplayMemberPath="Name" Width="180" Height="30"
+                      ToolTip="Выберите проект для фильтрации списка"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Статус" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <ComboBox SelectedIndex="{Binding SelectedStatusIndex}" Width="130" Height="30"
+                      ToolTip="Отфильтровать задачи по этапу выполнения">
+                            <ComboBoxItem Content="Все статусы"/>
+                            <ComboBoxItem Content="К выполнению"/>
+                            <ComboBoxItem Content="В работе"/>
+                            <ComboBoxItem Content="Тестирование"/>
+                            <ComboBoxItem Content="Выполнено"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Таблица без дублирующихся серых полей слева -->
+                <DataGrid Grid.Row="1" 
+              ItemsSource="{Binding TasksView}" 
+              SelectedItem="{Binding SelectedTask}" 
+              AutoGenerateColumns="False" 
+              IsReadOnly="True"
+              LoadingRow="DataGrid_LoadingRow"
+              HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Header}" Width="50"/>
+                        <DataGridTextColumn Header="Задача" Binding="{Binding Title}" Width="2*"/>
+                        <DataGridTextColumn Header="Проект" Binding="{Binding Projects.Name}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Дедлайн" Binding="{Binding DueDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="1*"/>
+                        <DataGridTextColumn Header="Приоритет" Binding="{Binding PriorityId}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+
+            <!-- Панель Администратора -->
+            <Border Grid.Column="1" Width="200" Background="{DynamicResource ElementBackgroundBrush}" Padding="15" CornerRadius="5"
+                    Visibility="{Binding IsAdminControlsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    <TextBlock Text="Действия" FontWeight="Bold" Margin="0,0,0,15" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryHeaderBrush}"/>
+                    <Button Content="➕ Добавить задачу" 
+        Command="{Binding AddTaskCommand}" 
+        Height="40" Margin="0,0,0,10" 
+        Background="{DynamicResource AccentButtonBrush}" Foreground="White" 
+        FontWeight="Bold" Cursor="Hand" 
+        ToolTip="Открыть форму создания новой задачи"/>
+                    <Button Content="✏️ Редактировать" Command="{Binding EditTaskCommand}" 
+        Height="35" Margin="0,0,0,10" 
+        Background="{DynamicResource ControlBackgroundBrush}" Foreground="{DynamicResource PrimaryTextBrush}" 
+        FontWeight="SemiBold" Cursor="Hand" ToolTip="Редактировать выбранную в таблице задачу"/>
+
+
+                    <!-- Кнопка удаления -->
+                    <Button Content="❌ Удалить задачу" Command="{Binding DeleteTaskCommand}" Height="35" Background="{DynamicResource DangerBrush}" Foreground="White" FontWeight="Bold" Margin="0,0,0,20"/>
+
+                    <Border Height="1" Background="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,15"/>
+
+                    <!-- Кнопки выгрузки отчетов (Пункт 6 ТЗ) -->
+                    <TextBlock Text="Выгрузка отчетов" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
+                    <Button Content="📊 Экспорт в Excel (.xlsx)" Command="{Binding ExportExcelCommand}" Height="35" Margin="0,0,0,8" Background="Transparent" Foreground="{DynamicResource PrimaryTextBrush}" Cursor="Hand"/>
+                    <Button Content="📄 Экспорт в Word (.docx)" Command="{Binding ExportWordCommand}" Height="35" Margin="0,0,0,8" Background="Transparent" Foreground="{DynamicResource PrimaryTextBrush}" Cursor="Hand"/>
+                    <Button Content="📕 Экспорт в PDF (.pdf)" Command="{Binding ExportPdfCommand}" Height="35" Background="Transparent" Foreground="{DynamicResource PrimaryTextBrush}" Cursor="Hand"/>
+                </StackPanel>
+
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

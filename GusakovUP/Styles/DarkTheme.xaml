@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ColorsAndFonts.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource ColorNavy}"/>
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{StaticResource ColorDarkBlue}"/>
+    <SolidColorBrush x:Key="ElementBackgroundBrush" Color="{StaticResource ColorNavy}"/>
+    <SolidColorBrush x:Key="PrimaryHeaderBrush" Color="{StaticResource ColorBrightTeal}"/>
+    <SolidColorBrush x:Key="AccentButtonBrush" Color="{StaticResource ColorCyanAccent}"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource ColorBrightTeal}"/>
+    <SolidColorBrush x:Key="PrimaryTextBrush" Color="{StaticResource ColorWhite}"/>
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="{StaticResource ColorLightGrayBg}"/>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource ColorPriorityHigh}"/>
+</ResourceDictionary>

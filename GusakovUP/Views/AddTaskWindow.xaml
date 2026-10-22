@@ -1,0 +1,58 @@
+﻿<Window x:Class="GusakovUP.Views.AddTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GusakovUP.Views"
+        mc:Ignorable="d"
+        Title="Панель администратора: Новая задача" Height="420" Width="400"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="ДОБАВЛЕНИЕ НОВОЙ ЗАДАЧИ" 
+                   FontFamily="{DynamicResource MainFont}" 
+                   FontSize="16" FontWeight="Bold" 
+                   Foreground="{DynamicResource PrimaryHeaderBrush}" 
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <!-- Название задачи -->
+            <TextBlock Text="Название задачи *" FontFamily="{DynamicResource MainFont}" Margin="0,0,0,3" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            <TextBox x:Name="TxtTitle" Height="35" Margin="0,0,0,12" VerticalContentAlignment="Center" Padding="5,0"
+                     ToolTip="Введите краткое название сути задачи"/>
+
+            <!-- Выбор проекта из БД (Связь 1:M) -->
+            <TextBlock Text="Закрепить за проектом *" FontFamily="{DynamicResource MainFont}" Margin="0,0,0,3" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            <ComboBox x:Name="CboProjects" Height="35" Margin="0,0,0,12" VerticalContentAlignment="Center"
+                      DisplayMemberPath="Name" ToolTip="Выберите проект, к которому относится задача"/>
+
+            <!-- Срок сдачи (Дедлайн) -->
+            <TextBlock Text="Срок выполнения" FontFamily="{DynamicResource MainFont}" Margin="0,0,0,3" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            <DatePicker x:Name="DpDueDate" Height="35" VerticalContentAlignment="Center"
+                        ToolTip="Выберите крайний срок сдачи задачи"/>
+        </StackPanel>
+
+        <!-- Кнопки управления -->
+        <Grid Grid.Row="2" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Content="💾 Сохранить" Grid.Column="0" Height="40" Margin="0,0,5,0"
+                    Background="{DynamicResource AccentButtonBrush}" Foreground="White" FontWeight="Bold"
+                    Click="SaveButton_Click" Cursor="Hand" ToolTip="Записать задачу в базу данных СУБД"/>
+
+            <Button Content="📁 Отмена" Grid.Column="1" Height="40" Margin="5,0,0,0"
+                    Background="{DynamicResource ControlBackgroundBrush}" Foreground="{DynamicResource PrimaryTextBrush}"
+                    Click="CancelButton_Click" Cursor="Hand" ToolTip="Закрыть окно без сохранения"/>
+        </Grid>
+    </Grid>
+</Window>
