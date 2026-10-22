@@ -62,6 +62,8 @@ namespace GusakovUP.ViewModels
         public ICommand ExportWordCommand { get; }
         public ICommand ExportPdfCommand { get; }
         public ICommand EditTaskCommand { get; }
+        public ICommand ShowChartCommand { get; }
+
 
         private void ExecuteEditTask(object param)
         {
@@ -78,6 +80,8 @@ namespace GusakovUP.ViewModels
 
         public MainViewModel(Users authenticatedUser, bool isAdminRole)
         {
+            ShowChartCommand = new RelayCommand(ExecuteShowChart);
+
             EditTaskCommand = new RelayCommand(ExecuteEditTask, _ => SelectedTask != null);
 
             CurrentUser = authenticatedUser;
@@ -97,6 +101,21 @@ namespace GusakovUP.ViewModels
             ExportExcelCommand = new RelayCommand(_ => RunExport("excel"));
             ExportWordCommand = new RelayCommand(_ => RunExport("word"));
             ExportPdfCommand = new RelayCommand(_ => RunExport("pdf"));
+        }
+        private void ExecuteShowChart(object param)
+        {
+            // Берём актуальный отфильтрованный список задач с экрана
+            var currentTasks = TasksView.Cast<GusakovUP.Models.Tasks>().ToList();
+
+            // Создаем стандартное окно
+            Views.ChartWindow chartWindow = new Views.ChartWindow();
+
+            // Передаем список напрямую через свойство Tag
+            chartWindow.Tag = currentTasks;
+            chartWindow.Owner = Application.Current.MainWindow;
+
+            // Открываем окно
+            chartWindow.ShowDialog();
         }
 
 

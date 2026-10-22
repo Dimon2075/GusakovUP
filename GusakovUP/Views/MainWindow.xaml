@@ -112,6 +112,10 @@
         Height="35" Margin="0,0,0,10" 
         Background="{DynamicResource ControlBackgroundBrush}" Foreground="{DynamicResource PrimaryTextBrush}" 
         FontWeight="SemiBold" Cursor="Hand" ToolTip="Редактировать выбранную в таблице задачу"/>
+                    <Button Content="📈 Посмотреть график" Command="{Binding ShowChartCommand}" 
+        Height="40" Margin="0,0,0,10" 
+        Background="{DynamicResource ControlBackgroundBrush}" Foreground="{DynamicResource PrimaryTextBrush}" 
+        FontWeight="Bold" Cursor="Hand" ToolTip="Показать круговую диаграмму выполнения по текущим задачам"/>
 
 
                     <!-- Кнопка удаления -->
